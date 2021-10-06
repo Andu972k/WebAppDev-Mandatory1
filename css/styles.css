@@ -2,3 +2,56 @@
     margin: 0;
     padding: 0;
 }
+
+:root {
+    --movieColor: #A9A9A9;
+}
+
+img {
+    size: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.movieObject {
+    background-color: var(--movieColor);
+    border-style: solid;
+    flex-basis: 10 rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+    
+}
+
+div.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    top: 0;
+    left: 0;
+}
+
+div.modalContent {
+    width: 80%;
+    background-color: #fefefe;
+    margin: auto;
+}
+
+section > div {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+ul {
+    list-style-position: inside;
+}
+
+span.closeModal {
+    float: right;
+}
