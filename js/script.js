@@ -7,7 +7,31 @@ $('#formSearch').on('submit', function(e) {
     e.preventDefault()
     const newdiv = $('<div></div>')
     let searchText = $('#searchText').val();
-    $.getJSON(`${baseURI}search/movie?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`, function(data) {
+
+    if ($('#searchType').val() == 'people') {
+        GetPeople(newdiv, searchText);
+    }
+    else {
+        GetMovies(newdiv, searchText);
+    }
+
+     
+    $('#section').empty();
+
+    newdiv.appendTo('#section');
+    //$('test').replaceWith(`<h1>${data['results'][0]['original_title']}</h1>`);
+    
+});
+
+function GetMovies(outputElement, searchText) {
+
+    let url = `${baseURI}search/movie?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`;
+
+    if ($('#searchType').val() == 'movie and year') {
+        url += `&primary_release_year=${$('#searchYear').val()}`;
+    }
+
+    $.getJSON(url, function(data) {
         console.log(data['results'][0]['original_title']);
         
         data['results'].forEach(movie => {
@@ -23,15 +47,29 @@ $('#formSearch').on('submit', function(e) {
                     Language: ${original_language}
 
                 </main>
-            </div>`).appendTo(newdiv);
-        })
-        
-        $('#section').empty();
-
-        newdiv.appendTo('#section');
-        //$('test').replaceWith(`<h1>${data['results'][0]['original_title']}</h1>`);
+            </div>`).appendTo(outputElement);
+        });
     });
-});
+}
+
+function GetPeople(outputElement, searchText) {
+
+    $.getJSON(`${baseURI}search/person?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`, function (data) {
+
+        data['results'].forEach(person => {
+            const {id, name, known_for_department} = person;
+            $(`<div class="peopleObject">
+                <header>
+                    <input type="hidden" value="${id}">
+                    <h3>${name}</h3>
+                </header>
+                <main>
+                    Main Activity: ${known_for_department}
+                </main>
+            </div>`).appendTo(outputElement);
+        });
+    });
+}
 
 $(document).on('click', 'div.movieObject', function() {
     const id = $(this).children('header').eq(0).children('input').eq(0).val();
@@ -159,7 +197,82 @@ $(document).on('click', 'div.movieObject', function() {
     $('#modal').show();
 });
 
+$(document).on('click', 'div.peopleObject', function () {
+    const id = $(this).find('input').val();
+    const modalContent = $(`<div class="modalContent">
+            <span class="closeModal">&times;</span>
+            <header>
+                <h3 id="name"></h3>
+            </header>
+            <main>
+                Main activity: <span id="mainActivity"></span> <br>
+                Birthday: <span id="birthday"></span> <br>
+                Birthplace: <span id="birthplace"></span> <br>
+                <div class="hidden">
+                    Day of decease:
+                    <span id="dayOfDecease"></span>
+                </div>
+                <a id="personalWebsite" href="">Personal website</a>
+                                    
+                <div>
+                     Biography:
+                    <p id="biography"></p>
+                </div>
+
+                Appearances:
+                <ul id="appearances"></ul>
+
+            </main>
+        </div>`);
+    $.getJSON(`${baseURI}person/${id}?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US`, function (data) {
+        const {name, known_for_department, birthday, place_of_birth, deathday, biography, homepage} = data;
+        modalContent.find('#name').text(name);
+        modalContent.find('#mainActivity').text(known_for_department);
+        modalContent.find('#birthday').text(birthday);
+        modalContent.find('#birthplace').text(place_of_birth);
+        if (deathday != null) {
+            modalContent.find('#dayOfDecease').text(deathday);
+            modalContent.find('div.hidden').show();
+        }
+        modalContent.find('#personalWebsite').text(homepage);
+        modalContent.find('#biography').text(biography);
+    });
+
+    $.getJSON(`${baseURI}person/${id}/movie_credits?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US`, function(data) {
+        const cast = data['cast'];
+        const crew = data['crew'];
+        console.log(cast[0])
+        cast.forEach(movie => {
+            $(`<li>Title: ${movie['original_title']}, Release year: ${new Date(movie['release_date']).getFullYear()}, Role: Actor</li>`).appendTo(modalContent.find('#appearances'));
+        });
+
+        crew.forEach(element => {
+            $(`<li>Title: ${movie['original_title']}, Release year: ${new Date(movie['release_date']).getFullYear()}, Role: ${crew['job']}</li>`).appendTo(modalContent.find('#appearances'));
+        });
+    });
+
+    modalContent.appendTo('#modal');
+    $('#modal').show();
+});
+
 $(document).on('click', 'span.closeModal', function() {
     $('#modal').empty();
     $('#modal').hide();
 });
+
+$(document).on('change', 'select#searchType', function () {
+    const yearField = $('#searchYear');
+    if ($('#searchType').val() == 'movie and year') {
+        
+        yearField.prop('disabled', false);
+        yearField.show();
+    }
+    else {
+        yearField.prop('disabled', true);
+        yearField.hide();
+    }
+
+})
+
+
+//onchange

@@ -16,7 +16,13 @@
         </h1>
 
         <form id="formSearch">
-            <input type="text" id="searchText" placeholder="search">
+            <input type="text" id="searchText" placeholder="search" required>
+            <input class="hidden" id="searchYear" type="text" disabled required pattern="\d{4}" placeholder="Year">
+            <select name="searchType" id="searchType">
+                <option value="movie" selected>Movie</option>
+                <option value="movie and year">Movie + Year</option>
+                <option value="people">People</option>
+            </select>
             <input type="submit" value="Search">
         </form>
 
@@ -33,7 +39,6 @@
     <footer>
 
     </footer>
-    <!--original_title, release_date, original_language, runtime, overview, homepage, genres, production_companies-->
     
 </body>
 </html>

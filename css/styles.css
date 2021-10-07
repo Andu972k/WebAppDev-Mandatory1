@@ -16,14 +16,25 @@ img {
 }
 
 
-.movieObject {
+div.movieObject {
     background-color: var(--movieColor);
     border-style: solid;
-    flex-basis: 10 rem;
+    
+    flex-basis: 25%;
     flex-grow: 1;
     flex-shrink: 1;
     
 }
+
+div.peopleObject {
+    background-color: var(--movieColor);
+    border-style: solid;
+
+    flex-basis: 25%;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
 
 div.modal {
     display: none;
@@ -34,11 +45,12 @@ div.modal {
     overflow: auto;
     top: 0;
     left: 0;
+    background-color: rgba(0,0,0,0.4);
 }
 
 div.modalContent {
     width: 80%;
-    background-color: #fefefe;
+    background-color: #FFFFFF;
     margin: auto;
 }
 
@@ -54,4 +66,12 @@ ul {
 
 span.closeModal {
     float: right;
+}
+
+body > header > form{
+    float: right;
+}
+
+body > header > h1 {
+    text-align: center;
 }
