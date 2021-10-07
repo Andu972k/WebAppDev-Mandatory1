@@ -5,10 +5,11 @@
 
 :root {
     --movieColor: #A9A9A9;
+    --pageColor: #9999CC;
 }
 
-img {
-    size: 100%;
+body {
+    background-color: var(--pageColor);
 }
 
 .hidden {

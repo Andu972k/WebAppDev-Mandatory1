@@ -3,6 +3,7 @@
 
 const baseURI = 'https://api.themoviedb.org/3/'
 
+//Search Function
 $('#formSearch').on('submit', function(e) {
     e.preventDefault()
     const newdiv = $('<div></div>')
@@ -23,6 +24,7 @@ $('#formSearch').on('submit', function(e) {
     
 });
 
+//Output movies
 function GetMovies(outputElement, searchText) {
 
     let url = `${baseURI}search/movie?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`;
@@ -52,6 +54,7 @@ function GetMovies(outputElement, searchText) {
     });
 }
 
+//Output people
 function GetPeople(outputElement, searchText) {
 
     $.getJSON(`${baseURI}search/person?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`, function (data) {
@@ -71,6 +74,7 @@ function GetPeople(outputElement, searchText) {
     });
 }
 
+//Open modal for movie
 $(document).on('click', 'div.movieObject', function() {
     const id = $(this).children('header').eq(0).children('input').eq(0).val();
     const modalContent = $(`<div class="modalContent">
@@ -90,8 +94,9 @@ $(document).on('click', 'div.movieObject', function() {
                             <ul id="productionCompanies">
 
                             </ul>
+                            <br>
 
-                            Homepage: <a id="homepage">Movie Homepage</a>
+                            Homepage: <a id="homepage">Movie Homepage</a> <br> <br>
                             <div>
                                 Summary:
                                 <p id="summary">
@@ -99,30 +104,42 @@ $(document).on('click', 'div.movieObject', function() {
                                 </p>
                             </div>
 
+                            <br>
+
                             Actors:
                             <ul id="actors">
 
                             </ul>
+
+                            <br>
 
                             Directors:
                             <ul id="directors">
 
                             </ul>
 
+                            <br>
+
                             Script writers:
                             <ul id="scriptWriters">
 
                             </ul>
+
+                            <br>
 
                             Executive producers:
                             <ul id="execProducers">
 
                             </ul>
 
+                            <br>
+
                             Producers:
                             <ul id="producers">
 
                             </ul>
+
+                            <br>
 
                             Music composers:
                             <ul id="musicComposers">
@@ -197,6 +214,7 @@ $(document).on('click', 'div.movieObject', function() {
     $('#modal').show();
 });
 
+//Open modal for person
 $(document).on('click', 'div.peopleObject', function () {
     const id = $(this).find('input').val();
     const modalContent = $(`<div class="modalContent">
@@ -212,12 +230,17 @@ $(document).on('click', 'div.peopleObject', function () {
                     Day of decease:
                     <span id="dayOfDecease"></span>
                 </div>
+                <br>
                 <a id="personalWebsite" href="">Personal website</a>
+
+                <br>
                                     
                 <div>
                      Biography:
                     <p id="biography"></p>
                 </div>
+
+                <br>
 
                 Appearances:
                 <ul id="appearances"></ul>
@@ -255,11 +278,13 @@ $(document).on('click', 'div.peopleObject', function () {
     $('#modal').show();
 });
 
+//Close modal
 $(document).on('click', 'span.closeModal', function() {
     $('#modal').empty();
     $('#modal').hide();
 });
 
+//Change search type
 $(document).on('change', 'select#searchType', function () {
     const yearField = $('#searchYear');
     if ($('#searchType').val() == 'movie and year') {
@@ -272,7 +297,4 @@ $(document).on('change', 'select#searchType', function () {
         yearField.hide();
     }
 
-})
-
-
-//onchange
+});
