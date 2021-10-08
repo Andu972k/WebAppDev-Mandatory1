@@ -28,7 +28,7 @@ $('#formSearch').on('submit', function(e) {
 function GetMovies(outputElement, searchText) {
 
     let url = `${baseURI}search/movie?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`;
-
+    //Use === instead of == for comparison
     if ($('#searchType').val() == 'movie and year') {
         url += `&primary_release_year=${$('#searchYear').val()}`;
     }
