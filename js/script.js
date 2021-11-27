@@ -1,7 +1,8 @@
 
 //const img_Url = 'https://image.tmdb.org/t/p/w500/'
 
-const baseURI = 'https://api.themoviedb.org/3/'
+const baseURI = 'https://api.themoviedb.org/3/';
+const apiKey = '7937e4aff3faed4f92f3cca2a9390e8c';
 
 //Search Function
 $('#formSearch').on('submit', function(e) {
@@ -27,7 +28,7 @@ $('#formSearch').on('submit', function(e) {
 //Output movies
 function GetMovies(outputElement, searchText) {
 
-    let url = `${baseURI}search/movie?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`;
+    let url = `${baseURI}search/movie?api_key=${apiKey}&language=en-US&query=${searchText}&page=1&include_adult=false`;
     //Use === instead of == for comparison
     if ($('#searchType').val() == 'movie and year') {
         url += `&primary_release_year=${$('#searchYear').val()}`;
@@ -57,7 +58,7 @@ function GetMovies(outputElement, searchText) {
 //Output people
 function GetPeople(outputElement, searchText) {
 
-    $.getJSON(`${baseURI}search/person?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US&query=${searchText}&page=1&include_adult=false`, function (data) {
+    $.getJSON(`${baseURI}search/person?api_key=${apiKey}&language=en-US&query=${searchText}&page=1&include_adult=false`, function (data) {
 
         data['results'].forEach(person => {
             const {id, name, known_for_department} = person;
@@ -149,8 +150,8 @@ $(document).on('click', 'div.movieObject', function() {
                         </main>
 
                     </div>`)
-    $.getJSON(`${baseURI}movie/${id}?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US`, function(data) {
-        console.log(data['original_title'])
+    $.getJSON(`${baseURI}movie/${id}?api_key=${apiKey}&language=en-US`, function(data) {
+        console.log(data['original_title']);
         
         const {original_title, release_date, original_language, runtime, overview, homepage, genres, production_companies} = data;
         
@@ -182,7 +183,7 @@ $(document).on('click', 'div.movieObject', function() {
     });
 
 
-    $.getJSON(`${baseURI}movie/${id}/credits?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US`, function(data) {
+    $.getJSON(`${baseURI}movie/${id}/credits?api_key=${apiKey}&language=en-US`, function(data) {
         const cast = data['cast'];
         const crew = data['crew'];
 
@@ -247,7 +248,7 @@ $(document).on('click', 'div.peopleObject', function () {
 
             </main>
         </div>`);
-    $.getJSON(`${baseURI}person/${id}?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US`, function (data) {
+    $.getJSON(`${baseURI}person/${id}?api_key=${apiKey}&language=en-US`, function (data) {
         const {name, known_for_department, birthday, place_of_birth, deathday, biography, homepage} = data;
         modalContent.find('#name').text(name);
         modalContent.find('#mainActivity').text(known_for_department);
@@ -261,7 +262,7 @@ $(document).on('click', 'div.peopleObject', function () {
         modalContent.find('#biography').text(biography);
     });
 
-    $.getJSON(`${baseURI}person/${id}/movie_credits?api_key=7937e4aff3faed4f92f3cca2a9390e8c&language=en-US`, function(data) {
+    $.getJSON(`${baseURI}person/${id}/movie_credits?api_key=${apiKey}&language=en-US`, function(data) {
         const cast = data['cast'];
         const crew = data['crew'];
         console.log(cast[0])
